@@ -43,14 +43,15 @@ def xmlGetChatList(Jsession):
 #https://messages.megafon.ru/onebox/getChatList.do?startNum=1&endNum=100&reFreshFlag=1&operation=1&chatMsgType=10100000000100000000000000000000&t=0.819595287356757
 
 def SendSMS(JSession,_umscsrf,NumberTo,Text,Flash=0):
+    '''
+    SendSMS(JSession,_umscsrf,NumberTo,Text,Flash=0) Sends SMS to number NumberTo... 
+    Jsession and _umscsfr are taken from login and first query
+    _umscsrf is enlarged inside  Function  
+    
+    returns XML response that  you could analyze to check what actually is wrong if any.
+    '''
     # https://messages.megafon.ru/onebox/sendSMS.do
-    #cid=
-    print "TEXT:",Text,type(Text)
     SMSSendURL='/onebox/sendSMS.do'
-#    print Text
-#    Text=Text.encode("utf-8")
-#    Text=unicode(Text)
-#    .encode("utf-8")
     params={
         'cid':'',
         'datetime':'',
@@ -70,10 +71,9 @@ def SendSMS(JSession,_umscsrf,NumberTo,Text,Flash=0):
         'to':NumberTo+';',
         'updateOperating':''
         }
-    print params
+#    print params
     UrlencParams=urllib.urlencode(params)
-    print UrlencParams
-#    SMSSendURL=SMSSendURL+"?"+UrlencParams
+#    print UrlencParams
     headers = {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                 "Accept": "text/plain",
                 "Cookie":"JSESSIONID="+JSession+";",
@@ -81,13 +81,12 @@ def SendSMS(JSession,_umscsrf,NumberTo,Text,Flash=0):
                 "User-Agent":"curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5",
                 "_umscsrf":InsertRandInString(_umscsrf)
                   }
-    print  headers
+#    print  headers
     SendSMSConnection=httplib.HTTPSConnection(UMSHOST)
     SendSMSConnection.set_debuglevel(0)
     SendSMSConnection.request('POST', SMSSendURL,UrlencParams, headers)
     SendResp=SendSMSConnection.getresponse()
-    print SendResp.getheaders()
-    print SendResp.read()
+    return  SendResp.read()
     
 
 import ParseOptions
@@ -99,18 +98,18 @@ if __name__ == '__main__':
     Password=Options.password
 #    Text=Options.text.encode("utf-8")
     Text=Options.text
-    print Text
+    Phone=Options.dest
+    print Text,Phone
     Flash=Options.flash
-    print Username,Password
+    print "Login parameters:",Username,Password
     JSessionID=UMSAuth(Username,Password)
-#    _umscsrf=get_umscsrf(JSessionID)
-#    umsc=InsertRandInString(_umscsrf)
     print JSessionID
     if JSessionID==0:
         print  "Error"
     else:
         _umscsrf=get_umscsrf(JSessionID)
 #        print xmlGetChatList(JSessionID)
-        SendSMS(JSessionID,_umscsrf,'+79262001222',Text,Flash)
+        xml=SendSMS(JSessionID,_umscsrf,Phone,Text,Flash)
+        print xml
     pass
     
