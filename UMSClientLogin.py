@@ -9,6 +9,7 @@ Created on Dec 18, 2012
 #import urllib2   # Probably we will not need it 
 import httplib
 import base64 
+import ssl
 UMSHOST='messages.megafon.ru'
 
 def UMSAuth(Username='9262001222',Password=''):
@@ -30,17 +31,21 @@ def UMSAuth(Username='9262001222',Password=''):
     
     UMSConnection=httplib.HTTPSConnection(UMSHOST)
     UMSConnection.set_debuglevel(0)
-    UMSConnection.request("GET", UMSURL,'',header)
-    LoginAnswer=UMSConnection.getresponse()
-    print LoginAnswer.status
-        # TODO: to add here some check for the status 200 + catch Error  if HTTP Fails at all
+    try:
+        UMSConnection.request("GET", UMSURL,'',header)
+        LoginAnswer=UMSConnection.getresponse()
+    except ( httplib.HTTPException, ssl.SSLError) as s:
+        print "Error", s
+#    print LoginAnswer.status    
+    if LoginAnswer.status <> 200:
+        return 0
 #    print LoginAnswer.status
-    print LoginAnswer.getheaders()    
+#    print LoginAnswer.getheaders()    
     JSessionID=LoginAnswer.getheader('set-cookie').split(";")[0].split("=")[1]
     # we have to check , if auth is OK:
     AuthResponse=LoginAnswer.read()
     if AuthResponse=='{"returnFlg":true}':
-        print JSessionID
+#        print JSessionID
         return JSessionID
     else:
         print "error"
@@ -62,7 +67,7 @@ def get_umscsrf(JSession):
     mix_doConn.request('POST', MIX_URL,'', headers)
     mix_resp=mix_doConn.getresponse()
     umscsrf=mix_resp.getheader('_umscsrf')
-    print "_umscsrf:",umscsrf
+#    print "_umscsrf:",umscsrf
     return umscsrf
 #https://messages.megafon.ru/onebox/mix.do
 
@@ -79,8 +84,15 @@ def InsertRandInString(Istring):
         return Res
 
 
-
+import ParseOptions
 if __name__ == '__main__':
-    print UMSAuth('9262001222','609177')
+    (Options,args)=ParseOptions.ParseOptions()
+    
+    JSession=UMSAuth(Options.name,Options.password)
+    print "Jsession:",JSession
+    print "UMSCSRF:",get_umscsrf(JSession)
+    
+    print "Error____"
     print UMSAuth('9262001222','609178')
+    
     pass
