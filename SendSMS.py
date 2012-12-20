@@ -7,7 +7,7 @@ Created on Dec 19, 2012
 @author: denirz
 '''
 
-from UMSClientLogin import UMSAuth, get_umscsrf, UMSHOST
+from UMSClientLogin import UMSAuth, get_umscsrf, InsertRandInString, UMSHOST
 import httplib
 import urllib
 def xmlGetChatList(Jsession):
@@ -83,21 +83,12 @@ def SendSMS(JSession,_umscsrf,NumberTo,Text,Flash=0):
                   }
     print  headers
     SendSMSConnection=httplib.HTTPSConnection(UMSHOST)
-    SendSMSConnection.set_debuglevel(6)
+    SendSMSConnection.set_debuglevel(0)
     SendSMSConnection.request('POST', SMSSendURL,UrlencParams, headers)
     SendResp=SendSMSConnection.getresponse()
     print SendResp.getheaders()
     print SendResp.read()
     
-#t:0.819595287356757
-def InsertRandInString(Istring):
-        print '---------------rand insert---------'
-        print Istring
-        print Istring[0:5]
-        Res=Istring[0:5]+'14555'+Istring[5:]
-        
-        print Res
-        return Res
 
 import ParseOptions
 

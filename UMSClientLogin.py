@@ -66,6 +66,20 @@ def get_umscsrf(JSession):
     return umscsrf
 #https://messages.megafon.ru/onebox/mix.do
 
+import random
+def InsertRandInString(Istring):
+        '''
+        inserts 5 random  digits  in Arg -  
+        Used to enlarge second security  tag called "_umscsrf"
+        '''
+        insert=''
+        for i  in range(5):
+            insert+=str(random.randint(0,9))
+        Res=Istring[0:5]+insert+Istring[5:]
+        return Res
+
+
+
 if __name__ == '__main__':
     print UMSAuth('9262001222','609177')
     print UMSAuth('9262001222','609178')
