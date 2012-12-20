@@ -93,6 +93,6 @@ if __name__ == '__main__':
     print "UMSCSRF:",get_umscsrf(JSession)
     
     print "Error____"
-    print UMSAuth('9262001222','609178')
+    print UMSAuth('9262001222','198767')
     
     pass
