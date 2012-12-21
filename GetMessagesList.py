@@ -1,11 +1,26 @@
+#__*__charsert:UTF-8__*__
+# -*- coding: utf-8 -*-
 '''
 Created on Dec 20, 2012
 
 @author: denirz
 '''
+import httplib,urllib
 from UMSClientLogin import UMSHOST
-def GetMessageList(Jsession,_umscsrf):
-    print "GetMessageListOutput1:"
+def GetChatList(Jsession,_umscsrf):
+    print "GetChatListOutput1:"
+    print __name__
+    UrltoGet='/getChatList.do?'
+    params={
+            'chatMsgType':10100000000100000000000000000000
+endNum:100
+operation:1
+reFreshFlag:1
+startNum:1
+t=0.7770682506014785
+    ChatListConnection=httplib.HTTPSConnection(UMSHOST)
+    ChatListConnection.set_debuglevel(0)
+    ChatListConnection.request('get', url, body, headers)
 # get chat list:
 #    https://messages.megafon.ru/onebox/getChatList.do?startNum=1&endNum=100&reFreshFlag=1&operation=1&chatMsgType=10100000000100000000000000000000&t=0.2095859289213695
 '''
@@ -68,12 +83,7 @@ Cookie: __utma=88342791.234245059.1347864230.1355899542.1355974282.7; __utmz=883
 
 '''
 
-
-
-
-
-    pass
 if __name__ == '__main__':
     print "GetMessagesList Module output:"
-    GetMessageList('ldd','123523542342')
+    GetChatList('ldd','123523542342')
     pass

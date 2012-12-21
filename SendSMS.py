@@ -18,7 +18,7 @@ def xmlGetChatList(Jsession):
          'reFreshFlag':'1',
          'startNum':'1',
          }
-    print params
+#    print params
     print UMSHOST
     ListMsgURL='/onebox/getChatList.do?'
     for var in params.keys():
