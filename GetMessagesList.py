@@ -5,8 +5,10 @@ Created on Dec 20, 2012
 
 @author: denirz
 '''
-import httplib,urllib
-from UMSClientLogin import UMSHOST,InsertRandInString,GetAuthParams
+from UMSClientLogin import UMSHOST, InsertRandInString, GetAuthParams
+import ParseOptions
+import httplib
+import urllib
 def xmlGetChatList(Jsession,_umscsrf):
 #    https://messages.megafon.ru/onebox/getChatList.do?startNum=1&endNum=100&reFreshFlag=1&operation=1&chatMsgType=10100000000100000000000000000000&t=0.2095859289213695
 #    print "GetChatListOutput1:"
@@ -40,7 +42,7 @@ def xmlGetChatList(Jsession,_umscsrf):
 #    print xml
     return xml
 
-def xmlGetChat(Jsession,_umscsrf):
+def xmlGetChat(Jsession,_umscsrf,rcv_me,send_counterpart,NumberOfMessages=50):
 #https://messages.megafon.ru/onebox/oneboxList.do?umReq.ctlg=1%2C2&umReq.numFlg=1&umReq.mType=2053&umReq.srt=0&umReq.lType=0&umReq.dFlg=0&umReq.srtDr=0&umReq.rdFlg=0&umReq.bNum=1&umReq.eNum=50&umReq.snd=%2B79262001208&umReq.rcv=%2B79262001222&umReq.bTime=&umReq.eTime=&umReq.impt=-1&umReq.t=&umReq.threadFlag=1&rownid=0.576959018029553    
     UrltoGet='/onebox/oneboxList.do?'
     params={
@@ -49,15 +51,15 @@ def xmlGetChat(Jsession,_umscsrf):
             'umReq.bTime':'',
             'umReq.ctlg':'1,2',
             'umReq.dFlg':0,
-            'umReq.eNum':50,
+            'umReq.eNum':NumberOfMessages,
             'umReq.eTime':'',
             'umReq.impt':-1,
             'umReq.lType':0,
             'umReq.mType':2053,
             'umReq.numFlg':1,
-            'umReq.rcv':'+79262001222',
+            'umReq.rcv':rcv_me,
             'umReq.rdFlg':0,
-            'umReq.snd':'+79262001223',
+            'umReq.snd':send_counterpart,
             'umReq.srt':0,
             'umReq.srtDr':0,
             'umReq.t':'',
@@ -72,9 +74,9 @@ def xmlGetChat(Jsession,_umscsrf):
                 "_umscsrf":InsertRandInString(_umscsrf)
                   }
     url=UrltoGet+UrlencParams
-    print "url:",url
+#    print "url:",url
     ChatListConnection=httplib.HTTPSConnection(UMSHOST)
-    ChatListConnection.set_debuglevel(6)
+    ChatListConnection.set_debuglevel(0)
     ChatListConnection.request('GET', url, '',headers)
     ChatListResp=ChatListConnection.getresponse()
     xml=ChatListResp.read()
@@ -85,12 +87,11 @@ def xmlGetChat(Jsession,_umscsrf):
    
    
 
-import ParseOptions
 if __name__ == '__main__':
     print "GetMessagesList Module output:"
     (args,params)=ParseOptions.ParseOptions()
     (Jsession,_umscsrf)=GetAuthParams(args.name,args.password)
     print "Main: Jsession:",Jsession
     print xmlGetChatList(Jsession,_umscsrf)
-    print xmlGetChat(Jsession,_umscsrf)
+    print xmlGetChat(Jsession,_umscsrf,'+79262001222','79265031700')
     pass
