@@ -48,7 +48,7 @@ def UMSAuth(Username='9262001222',Password=''):
 #        print JSessionID
         return JSessionID
     else:
-        print "error"
+#        print "error"
         return 0
 
 
@@ -82,8 +82,16 @@ def InsertRandInString(Istring):
             insert+=str(random.randint(0,9))
         Res=Istring[0:5]+insert+Istring[5:]
         return Res
-
-
+def GetAuthParams(UserName,Password):
+    '''
+     One Porcedure to return Both tokens
+      
+    '''
+    JSession=UMSAuth(UserName,Password)
+    if JSession==0:
+        return(0,0)
+    UMSCSRF=get_umscsrf(JSession)
+    return(JSession,UMSCSRF)
 import ParseOptions
 if __name__ == '__main__':
     (Options,args)=ParseOptions.ParseOptions()
@@ -94,5 +102,6 @@ if __name__ == '__main__':
     
     print "Error____"
     print UMSAuth('9262001222','198767')
+    print GetAuthParams('9262001222','6')
     
     pass
