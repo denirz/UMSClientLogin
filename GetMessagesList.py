@@ -6,21 +6,38 @@ Created on Dec 20, 2012
 @author: denirz
 '''
 import httplib,urllib
-from UMSClientLogin import UMSHOST
-def GetChatList(Jsession,_umscsrf):
+from UMSClientLogin import UMSHOST,InsertRandInString,GetAuthParams
+def xmlGetChatList(Jsession,_umscsrf):
     print "GetChatListOutput1:"
     print __name__
-    UrltoGet='/getChatList.do?'
+    UrltoGet='/onebox/getChatList.do?'
     params={
-            'chatMsgType':10100000000100000000000000000000
-endNum:100
-operation:1
-reFreshFlag:1
-startNum:1
-t=0.7770682506014785
+            'chatMsgType':'10100000000100000000000000000000',
+            'endNum':100,
+            'operation':1,
+            'reFreshFlag':1,
+            'startNum':1
+            }
+    UrlencParams=urllib.urlencode(params)
+    headers = {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                "Accept": "text/plain",
+                "Cookie":"JSESSIONID="+Jsession+";",
+                "Referer":"https://messages.megafon.ru/onebox/mix.do",
+                "User-Agent":"curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5",
+                "_umscsrf":InsertRandInString(_umscsrf)
+                  }
+    url=UrltoGet+UrlencParams
+    print "url:",url
     ChatListConnection=httplib.HTTPSConnection(UMSHOST)
-    ChatListConnection.set_debuglevel(0)
-    ChatListConnection.request('get', url, body, headers)
+    ChatListConnection.set_debuglevel(6)
+    ChatListConnection.request('GET', url, '',headers)
+    ChatListResp=ChatListConnection.getresponse()
+    xml=ChatListResp.read()
+#    fd=open('./chats.xml','w')
+#    fd.write(xml)
+#    fd.close()
+#    print xml
+    return xml
 # get chat list:
 #    https://messages.megafon.ru/onebox/getChatList.do?startNum=1&endNum=100&reFreshFlag=1&operation=1&chatMsgType=10100000000100000000000000000000&t=0.2095859289213695
 '''
@@ -82,8 +99,11 @@ Referer: https://messages.megafon.ru/onebox/mix.do
 Cookie: __utma=88342791.234245059.1347864230.1355899542.1355974282.7; __utmz=88342791.1347864230.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); bookmarks=eNpLtDKwqq4FAAZPAf4%3D; __utma=241511582.1838151384.1350099050.1350914052.1351022928.5; __utmz=241511582.1350099050.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=DDE7AA5DE4F42F99C0785DF1C806DEE1; __utmc=88342791; _umscsrf=1355981854513; __utmb=88342791.2.10.1355974282
 
 '''
-
+import ParseOptions
 if __name__ == '__main__':
     print "GetMessagesList Module output:"
-    GetChatList('ldd','123523542342')
+    (args,params)=ParseOptions.ParseOptions()
+    (Jsession,_umscsrf)=GetAuthParams(args.name,args.password)
+    print "Main: Jsession:",Jsession
+    print xmlGetChatList(Jsession,_umscsrf)
     pass
