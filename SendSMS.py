@@ -10,6 +10,7 @@ Created on Dec 19, 2012
 from UMSClientLogin import GetAuthParams, UMSAuth, get_umscsrf, InsertRandInString, UMSHOST
 import httplib
 import urllib
+'''
 def xmlGetChatList(Jsession):
     params={ 
          'chatMsgType':'10100000000100000000000000000000',
@@ -41,6 +42,7 @@ def xmlGetChatList(Jsession):
 #    fd.close()
     return xml
 #https://messages.megafon.ru/onebox/getChatList.do?startNum=1&endNum=100&reFreshFlag=1&operation=1&chatMsgType=10100000000100000000000000000000&t=0.819595287356757
+'''
 
 def SendSMS(JSession,_umscsrf,NumberTo,Text,Flash=0):
     '''

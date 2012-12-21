@@ -80,18 +80,20 @@ def xmlGetChat(Jsession,_umscsrf,rcv_me,send_counterpart,NumberOfMessages=50):
     ChatListConnection.request('GET', url, '',headers)
     ChatListResp=ChatListConnection.getresponse()
     xml=ChatListResp.read()
-    fd=open('./roldchats.xml','w')
-    fd.write(xml)
-    fd.close()
+#    fd=open('./roldchats.xml','w')
+#    fd.write(xml)
+#    fd.close()
     return xml   
    
    
-
+from SendSMS import SendSMS
 if __name__ == '__main__':
     print "GetMessagesList Module output:"
     (args,params)=ParseOptions.ParseOptions()
     (Jsession,_umscsrf)=GetAuthParams(args.name,args.password)
     print "Main: Jsession:",Jsession
     print xmlGetChatList(Jsession,_umscsrf)
-    print xmlGetChat(Jsession,_umscsrf,'+79262001222','79265031700')
+    print xmlGetChat(Jsession,_umscsrf,'+79262001222','9262001166')
+    print SendSMS(Jsession,_umscsrf,'+79262001222','Привет!',1)
+    print xmlGetChat(Jsession,_umscsrf,'+79262001222','9262001416')
     pass

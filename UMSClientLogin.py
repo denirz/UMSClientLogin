@@ -9,7 +9,7 @@ Created on Dec 18, 2012
 #import urllib2   # Probably we will not need it 
 import httplib
 import base64 
-import ssl
+import ssl,socket
 UMSHOST='messages.megafon.ru'
 
 def UMSAuth(Username='9262001222',Password=''):
@@ -34,8 +34,9 @@ def UMSAuth(Username='9262001222',Password=''):
     try:
         UMSConnection.request("GET", UMSURL,'',header)
         LoginAnswer=UMSConnection.getresponse()
-    except ( httplib.HTTPException, ssl.SSLError) as s:
+    except ( httplib.HTTPException,socket.gaierror, ssl.SSLError) as s:
         print "Error", s
+        return 0 
 #    print LoginAnswer.status    
     if LoginAnswer.status <> 200:
         return 0
