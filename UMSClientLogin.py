@@ -48,7 +48,7 @@ def UMSAuth(Username='9262001222',Password=''):
 #        print JSessionID
         return JSessionID
     else:
-        print "error"
+#        print "error"
         return 0
 
 
@@ -102,6 +102,6 @@ if __name__ == '__main__':
     
     print "Error____"
     print UMSAuth('9262001222','198767')
-    print GetAuthParams('9262001222','609177')
+    print GetAuthParams('9262001222','6')
     
     pass

@@ -7,7 +7,7 @@ Created on Dec 19, 2012
 @author: denirz
 '''
 
-from UMSClientLogin import UMSAuth, get_umscsrf, InsertRandInString, UMSHOST
+from UMSClientLogin import GetAuthParams, UMSAuth, get_umscsrf, InsertRandInString, UMSHOST
 import httplib
 import urllib
 def xmlGetChatList(Jsession):
@@ -102,6 +102,9 @@ if __name__ == '__main__':
     print Text,Phone
     Flash=Options.flash
     print "Login parameters:",Username,Password
+    (JSessionID,_umscsrf)=GetAuthParams(Username,Password)
+    print "JSessionID",JSessionID
+    '''
     JSessionID=UMSAuth(Username,Password)
     print JSessionID
     if JSessionID==0:
@@ -109,6 +112,8 @@ if __name__ == '__main__':
     else:
         _umscsrf=get_umscsrf(JSessionID)
 #        print xmlGetChatList(JSessionID)
+    '''
+    if _umscsrf<>0:
         xml=SendSMS(JSessionID,_umscsrf,Phone,Text,Flash)
         print xml
     pass
