@@ -56,10 +56,10 @@ if __name__ == '__main__':
     (JsessionID,umscsrf)=GetAuthParams(options.name,options.password)
     print (JsessionID,umscsrf)
     xml=xmlGetChatList(JsessionID,umscsrf)
-#    print xml
-    of=open("./chats_unread.xml",'w')
-    of.write(xml)
-    of.close()
+##    print xml
+#    of=open("./chats_unread.xml",'w')
+#    of.write(xml)
+#    of.close()
     ChatLs=ChatLists(xml)
     print "ChatLists:",ChatLs
     for i in ChatLs:
