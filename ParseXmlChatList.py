@@ -14,13 +14,17 @@ import xml.dom.minidom
 def ChatLists(xmlToParse):
     return xmlParse(xmlToParse,'msgContact')
     
+
+def Chat(xmlToParse):
+    return xmlParse(xmlToParse,'uniMsg')    
 def xmlParse(xmlToParse,TagToParse):    
 #    print   'ChatList(xmlToParse)'
 #    print xmlToParse
     xml_DOM=parseString(xmlToParse)
 #    print xml_DOM.nodeType
 #    RootXML=xml_DOM.firstChild
-    ChatsSet=()
+    ChatSet=()
+#    print TagToParse
 #    tag=C1.tagName
     
 #    print "tag:"+tag
@@ -32,7 +36,7 @@ def xmlParse(xmlToParse,TagToParse):
 
     for msg in msgC:
         chatDC=TagParamsFrom_msgContact(msg)
-        ChatSet=ChatsSet +(chatDC,)
+        ChatSet=ChatSet +(chatDC,)
     return ChatSet
 #    print ChatSet
         
@@ -46,15 +50,26 @@ def TagParamsFrom_msgContact(msgContactElement):
     while MsgAttr<>None:
 #        if MsgAttr.hasAttributes():  print 'hasAttr:',MsgAttr.hasAttributes()
 #        if not MsgAttr.hasChildNodes(): print 'hasChildNodes:',MsgAttr.hasChildNodes()
+#        print 'Type:',MsgAttr.firstChild.hasAttribute('data')
 #        print MsgAttr.tagName
-#        print "\t",MsgAttr.firstChild.data
-        MsgDict[MsgAttr.tagName]=MsgAttr.firstChild.data
+        
+        try:
+            Data=MsgAttr.firstChild.data
+        except AttributeError: 
+            Data=''
+        MsgDict[MsgAttr.tagName]=Data
+        
+#        if Data=='':
+#            MsgDict[MsgAttr.tagName]=''
+#            print "\t_"
+#        else:
+#            print "\t",Data
         MsgAttr=MsgAttr.nextSibling
     return MsgDict
     pass
 
 from UMSClientLogin import UMSHOST, InsertRandInString, GetAuthParams
-from GetMessagesList import xmlGetChatList
+from GetMessagesList import xmlGetChatList,xmlGetChat
 import  ParseOptions 
 if __name__ == '__main__':
     print "Main ParseXMLChatList:"
@@ -62,5 +77,13 @@ if __name__ == '__main__':
     (JsessionID,umscsrf)=GetAuthParams(options.name,options.password)
     print (JsessionID,umscsrf)
     xml=xmlGetChatList(JsessionID,umscsrf)
-    print ChatLists(xml)
+    print xml
+    print "ChatLists:",ChatLists(xml)
+    
+    xml=xmlGetChat(JsessionID,umscsrf,'+79262001222','+79262001222',10)
+    print "Chat:",Chat(xml)
+    j=1
+    for i in Chat(xml):
+        print j,"\t",i['ttl'],i['txtType']
+        j+=1
     pass
