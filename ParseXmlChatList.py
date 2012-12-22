@@ -10,22 +10,26 @@ from xml.dom.minidom import parse, parseString
 #import xml.dom.minidom
 import xml.dom.minidom 
 def ChatLists(xmlToParse):
-    print   'ChatList(xmlToParse)'
-    print xmlToParse
+#    print   'ChatList(xmlToParse)'
+#    print xmlToParse
     xml_DOM=parseString(xmlToParse)
-    print xml_DOM.nodeType
-    C1=xml_DOM.firstChild
-    tag=C1.tagName
+#    print xml_DOM.nodeType
+    RootXML=xml_DOM.firstChild
+    ChatsSet=()
+#    tag=C1.tagName
     
-    print "tag:"+tag
-    print C1.childNodes
-    for i in  C1.childNodes:
-            print i.tagName
+#    print "tag:"+tag
+#    print C1.childNodes
+#    for i in  C1.childNodes:
+#            print i.tagName
     msgC=xml_DOM.getElementsByTagName('msgContact')
     for msg in msgC:
-        print '-----',msg.tagName,'----'
-        print ChatParamsFrom_msgContact(msg)
-#
+        chatDC=ChatParamsFrom_msgContact(msg)
+        ChatSet=ChatsSet +(chatDC,)
+    return ChatSet
+#    print ChatSet
+        
+#       Chat 
 #    
 #    xml_DOM
 
@@ -53,5 +57,5 @@ if __name__ == '__main__':
     (JsessionID,umscsrf)=GetAuthParams(options.name,options.password)
     print (JsessionID,umscsrf)
     xml=xmlGetChatList(JsessionID,umscsrf)
-    ChatLists(xml)
+    print ChatLists(xml)
     pass
