@@ -1,3 +1,5 @@
+#__*__charsert:UTF-8__*__
+# -*- coding: utf-8 -*-
 '''
 Created on Dec 19, 2012
 

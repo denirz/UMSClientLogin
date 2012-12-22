@@ -94,6 +94,6 @@ if __name__ == '__main__':
     print "Main: Jsession:",Jsession
     print xmlGetChatList(Jsession,_umscsrf)
     print xmlGetChat(Jsession,_umscsrf,'+79262001222','9262001166')
-    print SendSMS(Jsession,_umscsrf,'+79262001222','Привет!',1)
-    print xmlGetChat(Jsession,_umscsrf,'+79262001222','9262001416')
+    print SendSMS(Jsession,_umscsrf,'+79262001222','давайте что-то просто проверимэ ',0)
+    print xmlGetChat(Jsession,_umscsrf,'+79262001222','+79262001222',5)
     pass

@@ -103,6 +103,6 @@ if __name__ == '__main__':
     
     print "Error____"
     print UMSAuth('9262001222','198767')
-    print GetAuthParams('9262001222','6')
+    print GetAuthParams(Options.name,Options.password)
     
     pass
