@@ -10,6 +10,9 @@ from xml.dom.minidom import parse, parseString
 #import xml.dom.minidom
 import xml.dom.minidom 
 def ChatLists(xmlToParse):
+    return xmlParse(xmlToParse,'msgContact')
+    
+def xmlParse(xmlToParse,TagToParse):    
 #    print   'ChatList(xmlToParse)'
 #    print xmlToParse
     xml_DOM=parseString(xmlToParse)
@@ -22,7 +25,9 @@ def ChatLists(xmlToParse):
 #    print C1.childNodes
 #    for i in  C1.childNodes:
 #            print i.tagName
-    msgC=xml_DOM.getElementsByTagName('msgContact')
+#    msgC=xml_DOM.getElementsByTagName('msgContact')
+    msgC=xml_DOM.getElementsByTagName(TagToParse)
+
     for msg in msgC:
         chatDC=ChatParamsFrom_msgContact(msg)
         ChatSet=ChatsSet +(chatDC,)
@@ -47,8 +52,6 @@ def ChatParamsFrom_msgContact(msgContactElement):
     pass
 
 from UMSClientLogin import UMSHOST, InsertRandInString, GetAuthParams
-
-
 from GetMessagesList import xmlGetChatList
 import  ParseOptions 
 if __name__ == '__main__':
