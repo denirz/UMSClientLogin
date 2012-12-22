@@ -9,6 +9,8 @@ THis module  contains modules that are required to parse xml with chat lists and
 from xml.dom.minidom import parse, parseString
 #import xml.dom.minidom
 import xml.dom.minidom 
+
+
 def ChatLists(xmlToParse):
     return xmlParse(xmlToParse,'msgContact')
     
@@ -17,7 +19,7 @@ def xmlParse(xmlToParse,TagToParse):
 #    print xmlToParse
     xml_DOM=parseString(xmlToParse)
 #    print xml_DOM.nodeType
-    RootXML=xml_DOM.firstChild
+#    RootXML=xml_DOM.firstChild
     ChatsSet=()
 #    tag=C1.tagName
     
@@ -29,7 +31,7 @@ def xmlParse(xmlToParse,TagToParse):
     msgC=xml_DOM.getElementsByTagName(TagToParse)
 
     for msg in msgC:
-        chatDC=ChatParamsFrom_msgContact(msg)
+        chatDC=TagParamsFrom_msgContact(msg)
         ChatSet=ChatsSet +(chatDC,)
     return ChatSet
 #    print ChatSet
@@ -38,7 +40,7 @@ def xmlParse(xmlToParse,TagToParse):
 #    
 #    xml_DOM
 
-def ChatParamsFrom_msgContact(msgContactElement):
+def TagParamsFrom_msgContact(msgContactElement):
     MsgAttr=msgContactElement.firstChild
     MsgDict={}
     while MsgAttr<>None:

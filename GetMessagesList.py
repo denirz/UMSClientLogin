@@ -43,6 +43,12 @@ def xmlGetChatList(Jsession,_umscsrf):
     return xml
 
 def xmlGetChat(Jsession,_umscsrf,rcv_me,send_counterpart,NumberOfMessages=50):
+    '''
+    #xmlGetChat(Jsession,_umscsrf,rcv_me,send_counterpart,NumberOfMessages=50):
+    
+    retuems XML with chat between  _me_ and _ send_counterpart_ Numbers....
+    both numbers should be presented in international format   NUmber Of Messages  is 50 by default 
+    '''
 #https://messages.megafon.ru/onebox/oneboxList.do?umReq.ctlg=1%2C2&umReq.numFlg=1&umReq.mType=2053&umReq.srt=0&umReq.lType=0&umReq.dFlg=0&umReq.srtDr=0&umReq.rdFlg=0&umReq.bNum=1&umReq.eNum=50&umReq.snd=%2B79262001208&umReq.rcv=%2B79262001222&umReq.bTime=&umReq.eTime=&umReq.impt=-1&umReq.t=&umReq.threadFlag=1&rownid=0.576959018029553    
     UrltoGet='/onebox/oneboxList.do?'
     params={
