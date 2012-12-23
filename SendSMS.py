@@ -7,7 +7,7 @@ Created on Dec 19, 2012
 @author: denirz
 '''
 
-from UMSClientLogin import GetAuthParams, UMSAuth, get_umscsrf, InsertRandInString, UMSHOST
+from UMSClientLogin import GetAuthParams, InsertRandInString, UMSHOST
 import httplib
 import urllib
 '''
