@@ -62,9 +62,10 @@ if __name__ == '__main__':
 #    of.close()
     ChatLs=ChatLists(xml)
     print "ChatLists:",ChatLs
+    print ChatLs[0].keys()
     for i in ChatLs:
         print i 
-    xml=xmlGetChat(JsessionID,umscsrf,'+79262001222','+79262131605',10)
+    xml=xmlGetChat(JsessionID,umscsrf,'+79262001222','+79262001222',10)
     Messages=Chat(xml)
     print "Chat:",Messages
     print Messages[0].keys()
