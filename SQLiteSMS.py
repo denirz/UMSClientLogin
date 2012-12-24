@@ -155,6 +155,10 @@ def dbAddMessages(MessageSet):
     return AddedMessages
 
 def UpdateLocalSQLite(JsessionID,umscrf,ChatListDepth=10,ChatMessagesDepth=10,MyMSISDN='+79262001222'):
+    '''
+    UpdateLocalSQLite(JsessionID,umscrf,ChatListDepth=10,ChatMessagesDepth=10,MyMSISDN='+79262001222'):
+     to be called every Time to update the  Local  Database from  Server;
+    '''
     xml=xmlGetChatList(JsessionID,umscsrf)
     ChatLs=ChatLists(xml)
 #    print "ChatLists To Insert:",ChatLs,"\n"
