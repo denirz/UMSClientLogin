@@ -5,14 +5,18 @@
 Created on Dec 23, 2012
 
 @author: denirz
+Finction   to Put  ChatSets  and MessageSet into database 
 '''
 import sqlite3
 DBNAME='./example.db'
+DEBUGLEVEL=0
 def  dbConnection():
     '''
-    will check if databse & Table  for _ChatList_ Exista. 
+    will check if database & Table  for _ChatList_ Exists. 
     if YES -  returns   Connections descriptor  to this Database.
-    if NO -  creates it 
+    if NO -  creates it  and returns the connection 
+    _ChatList_  - is a table for Chats 
+    _Messages_  - is a table for messages  
     '''
     conn = sqlite3.connect(DBNAME)
     Cursor=conn.cursor()
@@ -25,7 +29,6 @@ def  dbConnection():
             maxTime TEXT\
             )'
     Cursor.execute(SqlCreateString)
-    conn.commit()
     SqlCreateString='CREATE TABLE IF NOT EXISTS Messages (\
                 osz,\
                 txtType,\
@@ -62,13 +65,14 @@ def  dbConnection():
                 )'
     Cursor.execute(SqlCreateString)
     conn.commit()
-                
     return conn
-#import re
+
 def putItemIntoDb(objectSer,conn,TableName):
     '''
-    INSERT ITEM INTO DB
-    do it Without any  conditions! 
+    putItemIntoDb(objectSer,conn,TableName): 
+    Inserts Item _objectSer_ INTO DB  table _TableName_ of _conn_ database
+     
+    Does it Without any  conditions! 
     '''
     Cursor=conn.cursor()
     strSQL='INSERT INTO '+TableName+ '('
@@ -78,78 +82,80 @@ def putItemIntoDb(objectSer,conn,TableName):
         ColumnKeys=ColumnKeys+Key+','
         ValuesKeys=ValuesKeys+'"'+objectSer[Key].replace('"','') +'"'+','
     strSQL=strSQL+ColumnKeys[:-1] + ') VALUES ('+ ValuesKeys[:-1]+')'
-    print strSQL
+    if DEBUGLEVEL:print strSQL
     Cursor.execute(strSQL)
     conn.commit()
     
 def deleteItemFromDb(ObjectSer,conn,TableName,KeyFieldSet):
     ''''
-    Should delete  in Db all items that a  similar to   the _ObjectSer_
-    and then add objectSer itself into the DB 
+    Deletes from Db _conn_ all the items  similar to   the _ObjectSer_
+    Similarity means _KeyFieldSet_ parameters to be equal  to  corresponding fields of tghe table _TableName_
     DELETE FROM TableName WHERE (KeyField=ObjectSer[KeyField] AND KeyField2=ObjectSer[KeyField2] AND ...)
     '''
-    pass
     #First Delete:
     strSQL='DELETE FROM '+TableName+' WHERE ( '
     for KeyField in KeyFieldSet:
         strSQL=strSQL+KeyField+'="'+ObjectSer[KeyField]+'" AND '
     strSQL=strSQL[:-4]+")"
-    print "DLETE SQL",strSQL
+    if DEBUGLEVEL: print "DELETE SQL",strSQL
     Cursor=conn.cursor()
-    print Cursor.execute(strSQL)
+    Cursor.execute(strSQL)
+    conn.commit()
 
 def checkItemInDb(item,db,TableName,KeyFieldSet):
+    '''
+    Checks if the  _item_  exists in _TableName_ of _db_ database
+    Similarity   means _KeyFieldSet_ fields of the  _item_ are equal to the  database record
+    SELECT * FROM TableName WHERE (KeyFields=item[KeyFields] AND KeyField1=item[KryField1]...) 
+    '''
     strSQL='SELECT * FROM '+TableName+' WHERE ('
     for KeyField in KeyFieldSet:
-#        print item[KeyField]
-#        print item.values()
         strSQL=strSQL+ KeyField+'="'+item[KeyField]+'" AND '
     strSQL=strSQL[:-4]+")"
-    print strSQL 
+    if DEBUGLEVEL:print strSQL 
     cur=db.cursor()
     cur.execute(strSQL)
     exdata=cur.fetchone()
-    print exdata
     if exdata:
         return "yes"
     else:
-        return 'no'
-        
-    pass 
+        return "no"
     
 
-def dbAddChatList(Chats):
+def dbAddChatList(Chats,NumberOfItemsToAnaalyze):
     '''
-    Experimental addition of chat List to  SQLite 
+    Adds Set of Chat ( _Chats_) to the ChatList  to the  DataBase:
+     Analyze only _NumberOfItemsToAnaalyze_
+    if the old Version od Chat is already in the Database , so first we have to remove it from there
+     
     '''
     db=dbConnection()
     if len(Chats)==0:
-        return "no Chats to insert"
-    for item  in Chats[:2000]:
+        return ('Error',)
+    InsertedItems=()
+    for item  in Chats[:NumberOfItemsToAnaalyze]:
         if checkItemInDb(item,db,'ChatList',('MSISDN','maxTime'))=='no':
             deleteItemFromDb(item,db,'ChatList',('MSISDN',))
             putItemIntoDb(item,db,'ChatList')
-#        else:
-#            deleteItemFromDb(item,db,'ChatList',('MSISDN',))
-#            putItemIntoDb(item,db,'ChatList')
-            
-#        putItemIntoDb(item,db,'ChatList')
-#        deleteItemFromDb(item,db,'ChatList',('MSISDN','maxTime'))
-#        print checkItemInDb(item,db,'ChatList',('MSISDN','maxTime'))
+            InsertedItems=InsertedItems+(item,)
+    return InsertedItems
+    db.close()
 
 def dbAddMessages(MessageSet):
+    '''
+    Add Messages _MessageSet_ to the Messages table of the DataBase
+    '''
     conn=dbConnection()
+    AddedMessages=()
     for Message in MessageSet:
-#       PUT ALL MESSAGES into DB:
-#        putItemIntoDb(Message,conn,'Messages')
-#        Check if message is inside Db:
-        print checkItemInDb(Message,conn,'Messages',('msgID',))
-#        checkItemInDb(Messae)
-    pass
-    
+        if checkItemInDb(Message,conn,'Messages',('msgID',))=='no':
+            if DEBUGLEVEL:print "adding Message into DB"
+            putItemIntoDb(Message,conn,'Messages')
+            AddedMessages=AddedMessages+(Message,)
+    return AddedMessages
 
 
-
+############################### Main 
 import  ParseOptions 
 from ParseXmlChatList import ChatLists, Chat 
 from GetMessagesList import xmlGetChatList,xmlGetChat
@@ -160,14 +166,14 @@ if __name__ == '__main__':
     (JsessionID,umscsrf)=GetAuthParams(options.name,options.password)
     print (JsessionID,umscsrf)
     xml=xmlGetChatList(JsessionID,umscsrf)
-##    print xml
-#    of=open("./chats_unread.xml",'w')
-#    of.write(xml)
-#    of.close()
     ChatLs=ChatLists(xml)
-    print "ChatLists:",ChatLs
-    dbAddChatList(ChatLs)
+#    print "ChatLists To Insert:",ChatLs,"\n"
+    insChats=dbAddChatList(ChatLs,10)
+    print "InsertedChats:",insChats
     
-    xml=xmlGetChat(JsessionID,umscsrf,'+79262001222','SMENA',14)
-    MessageSet=Chat(xml)
-#    dbAddMessages(MessageSet)
+    for ChatItem in insChats:
+        xml=xmlGetChat(JsessionID,umscsrf,'+79262001222',ChatItem['MSISDN'],1)
+#        print xml
+        MessageSet=Chat(xml)
+        print 'AddedMessages:',ChatItem['MSISDN'],dbAddMessages(MessageSet)
+

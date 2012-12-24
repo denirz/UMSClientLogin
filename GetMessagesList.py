@@ -16,7 +16,7 @@ def xmlGetChatList(Jsession,_umscsrf):
     UrltoGet='/onebox/getChatList.do?'
     params={
             'chatMsgType':'10100000000100000000000000000000',
-            'endNum':1200,
+            'endNum':100,
             'operation':1,
             'reFreshFlag':1,
             'startNum':1
