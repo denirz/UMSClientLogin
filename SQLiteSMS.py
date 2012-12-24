@@ -182,9 +182,10 @@ from UMSClientLogin import  GetAuthParams
 if __name__ == '__main__':
     print "Main ParseXMLChatList:"
     (options,args)=ParseOptions.ParseOptions()
-    (JsessionID,umscsrf)=GetAuthParams(options.name,'+'+options.password)
+    
+    (JsessionID,umscsrf)=GetAuthParams(options.name,options.password)
     print (JsessionID,umscsrf)
-    UpdateLocalSQLite(JsessionID,umscsrf,10,20,options.name)
+    UpdateLocalSQLite(JsessionID,umscsrf,10,20,"+"+options.name)
     
     
     '''
