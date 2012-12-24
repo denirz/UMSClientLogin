@@ -154,6 +154,21 @@ def dbAddMessages(MessageSet):
             AddedMessages=AddedMessages+(Message,)
     return AddedMessages
 
+def UpdateLocalSQLite(JsessionID,umscrf,ChatListDepth=10,ChatMessagesDepth=10,MyMSISDN='+79262001222'):
+    xml=xmlGetChatList(JsessionID,umscsrf)
+    ChatLs=ChatLists(xml)
+#    print "ChatLists To Insert:",ChatLs,"\n"
+    insChats=dbAddChatList(ChatLs,ChatListDepth)
+#    print "InsertedChats:",insChats
+    
+    for ChatItem in insChats:
+        print MyMSISDN
+        xml=xmlGetChat(JsessionID,umscsrf,MyMSISDN,ChatItem['MSISDN'],ChatMessagesDepth)
+#        print xml
+        MessageSet=Chat(xml)
+        addedMessages=dbAddMessages(MessageSet)
+        print 'AddedMessages:',ChatItem['MSISDN'],len(addedMessages),addedMessages
+    
 
 ############################### Main 
 import  ParseOptions 
@@ -163,8 +178,13 @@ from UMSClientLogin import  GetAuthParams
 if __name__ == '__main__':
     print "Main ParseXMLChatList:"
     (options,args)=ParseOptions.ParseOptions()
-    (JsessionID,umscsrf)=GetAuthParams(options.name,options.password)
+    (JsessionID,umscsrf)=GetAuthParams(options.name,'+'+options.password)
     print (JsessionID,umscsrf)
+    UpdateLocalSQLite(JsessionID,umscsrf,10,20,options.name)
+    
+    
+    '''
+    
     xml=xmlGetChatList(JsessionID,umscsrf)
     ChatLs=ChatLists(xml)
 #    print "ChatLists To Insert:",ChatLs,"\n"
@@ -172,8 +192,10 @@ if __name__ == '__main__':
     print "InsertedChats:",insChats
     
     for ChatItem in insChats:
-        xml=xmlGetChat(JsessionID,umscsrf,'+79262001222',ChatItem['MSISDN'],1)
+        xml=xmlGetChat(JsessionID,umscsrf,'+79262001222',ChatItem['MSISDN'],10)
 #        print xml
         MessageSet=Chat(xml)
-        print 'AddedMessages:',ChatItem['MSISDN'],dbAddMessages(MessageSet)
+        addedMessages=dbAddMessages(MessageSet)
+        print 'AddedMessages:',ChatItem['MSISDN'],len(addedMessages),addedMessages
 
+    '''
