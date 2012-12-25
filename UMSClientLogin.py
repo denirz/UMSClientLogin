@@ -10,8 +10,8 @@ Created on Dec 18, 2012
 import httplib
 import base64 
 import ssl,socket
-UMSHOST='messages.megafon.ru'
-#UMSHOST='plus.messages.megafon.ru'
+#UMSHOST='messages.megafon.ru'
+UMSHOST='plus.messages.megafon.ru'
 
 DEBUGLEVEL=0
 
@@ -65,8 +65,9 @@ def get_umscsrf(JSession):
     headers={"Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                  "Accept": "text/plain",
                  "Cookie":"JSESSIONID="+str(JSession),
-                 "Referer":"https://messages.megafon.ru/onebox/mix.do",
-                  "User-Agent":"curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5"
+                 "Referer":UMSHOST+MIX_URL,
+                  "User-Agent":"curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5",
+                  "_umscsrf":"1234567890"
                   }
     mix_doConn=httplib.HTTPSConnection(UMSHOST)
     mix_doConn.set_debuglevel(DEBUGLEVEL)

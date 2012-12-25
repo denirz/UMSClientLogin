@@ -80,7 +80,7 @@ def SendSMS(JSession,_umscsrf,NumberTo,Text,Flash=0):
     headers = {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                 "Accept": "text/plain",
                 "Cookie":"JSESSIONID="+JSession+";",
-                "Referer":"https://messages.megafon.ru/onebox/mix.do",
+                "Referer":UMSHOST+"/onebox/mix.do",
                 "User-Agent":"curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5",
                 "_umscsrf":InsertRandInString(_umscsrf)
                   }
