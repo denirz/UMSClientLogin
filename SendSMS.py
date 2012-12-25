@@ -10,39 +10,6 @@ Created on Dec 19, 2012
 from UMSClientLogin import GetAuthParams, InsertRandInString, UMSHOST
 import httplib
 import urllib
-'''
-def xmlGetChatList(Jsession):
-    params={ 
-         'chatMsgType':'10100000000100000000000000000000',
-         'endNum':'100',
-         'operation':'1',
-         'reFreshFlag':'1',
-         'startNum':'1',
-         }
-#    print params
-    print UMSHOST
-    ListMsgURL='/onebox/getChatList.do?'
-    for var in params.keys():
-            ListMsgURL=ListMsgURL+'&'+var+'='+params[var]
-    print ListMsgURL
-#    ListMsgURL='/onebox/getChatList.do?startNum=1&endNum=100&reFreshFlag=1&operation=1&chatMsgType=10100000000100000000000000000000'
-#    startNum=1&endNum=100&reFreshFlag=1&operation=1&chatMsgType=10100000000100000000000000000000
-    headers = {"Content-type": "application/x-www-form-urlencoded",
-                 "Accept": "text/plain",
-                 "Cookie":"JSESSIONID="+Jsession}
-#    print headers
-    ListConnection=httplib.HTTPSConnection(UMSHOST)
-    ListConnection.set_debuglevel(6)
-    ListConnection.request('GET', ListMsgURL,'', headers)
-    listresp=ListConnection.getresponse()
-    xml=listresp.read()
-    print "headers LISTConnection:", listresp.getheaders()
-#    fd=open('./list.xml','w')
-#    fd.write(xml)
-#    fd.close()
-    return xml
-#https://messages.megafon.ru/onebox/getChatList.do?startNum=1&endNum=100&reFreshFlag=1&operation=1&chatMsgType=10100000000100000000000000000000&t=0.819595287356757
-'''
 
 def SendSMS(JSession,_umscsrf,NumberTo,Text,Flash=0):
 #    print "SendSMS:",_umscsrf
@@ -107,15 +74,7 @@ if __name__ == '__main__':
     print "Login parameters:",Username,Password
     (JSessionID,_umscsrf)=GetAuthParams(Username,Password)
     print "JSessionID",JSessionID,_umscsrf
-    '''
-    JSessionID=UMSAuth(Username,Password)
-    print JSessionID
-    if JSessionID==0:
-        print  "Error"
-    else:
-        _umscsrf=get_umscsrf(JSessionID)
-#        print xmlGetChatList(JSessionID)
-    '''
+
 #    if not _umscsrf: 
 #    _umscsrf='11111111111111'
     if _umscsrf<>0:

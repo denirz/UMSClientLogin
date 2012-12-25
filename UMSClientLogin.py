@@ -10,8 +10,8 @@ Created on Dec 18, 2012
 import httplib
 import base64 
 import ssl,socket
-UMSHOST='messages.megafon.ru'
-#UMSHOST='plus.messages.megafon.ru'
+#UMSHOST='messages.megafon.ru'
+UMSHOST='plus.messages.megafon.ru'
 #
 DEBUGLEVEL=0
 
