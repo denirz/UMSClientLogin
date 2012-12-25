@@ -45,6 +45,7 @@ def xmlGetChatList(Jsession):
 '''
 
 def SendSMS(JSession,_umscsrf,NumberTo,Text,Flash=0):
+#    print "SendSMS:",_umscsrf
     '''
     SendSMS(JSession,_umscsrf,NumberTo,Text,Flash=0) Sends SMS to number NumberTo... 
     Jsession and _umscsfr are taken from login and first query
@@ -105,7 +106,7 @@ if __name__ == '__main__':
     Flash=Options.flash
     print "Login parameters:",Username,Password
     (JSessionID,_umscsrf)=GetAuthParams(Username,Password)
-    print "JSessionID",JSessionID
+    print "JSessionID",JSessionID,_umscsrf
     '''
     JSessionID=UMSAuth(Username,Password)
     print JSessionID
@@ -115,6 +116,8 @@ if __name__ == '__main__':
         _umscsrf=get_umscsrf(JSessionID)
 #        print xmlGetChatList(JSessionID)
     '''
+#    if not _umscsrf: 
+#    _umscsrf='11111111111111'
     if _umscsrf<>0:
         xml=SendSMS(JSessionID,_umscsrf,Phone,Text,Flash)
         print xml

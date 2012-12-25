@@ -11,6 +11,9 @@ import httplib
 import base64 
 import ssl,socket
 UMSHOST='messages.megafon.ru'
+#UMSHOST='plus.messages.megafon.ru'
+
+DEBUGLEVEL=0
 
 def UMSAuth(Username='9262001222',Password=''):
     '''
@@ -35,7 +38,7 @@ def UMSAuth(Username='9262001222',Password=''):
         UMSConnection.request("GET", UMSURL,'',header)
         LoginAnswer=UMSConnection.getresponse()
     except ( httplib.HTTPException,socket.gaierror, ssl.SSLError) as s:
-        print "Error", s
+        print "Error in Auth", s
         return 0 
 #    print LoginAnswer.status    
     if LoginAnswer.status <> 200:
@@ -45,6 +48,7 @@ def UMSAuth(Username='9262001222',Password=''):
     JSessionID=LoginAnswer.getheader('set-cookie').split(";")[0].split("=")[1]
     # we have to check , if auth is OK:
     AuthResponse=LoginAnswer.read()
+    if DEBUGLEVEL:print"AuthResp:", AuthResponse
     if AuthResponse=='{"returnFlg":true}':
 #        print JSessionID
         return JSessionID
@@ -65,6 +69,7 @@ def get_umscsrf(JSession):
                   "User-Agent":"curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5"
                   }
     mix_doConn=httplib.HTTPSConnection(UMSHOST)
+    mix_doConn.set_debuglevel(DEBUGLEVEL)
     mix_doConn.request('POST', MIX_URL,'', headers)
     mix_resp=mix_doConn.getresponse()
     umscsrf=mix_resp.getheader('_umscsrf')
@@ -83,6 +88,7 @@ def InsertRandInString(Istring):
             insert+=str(random.randint(0,9))
         Res=Istring[0:5]+insert+Istring[5:]
         return Res
+    
 def GetAuthParams(UserName,Password):
     '''
      One Porcedure to return Both tokens
@@ -101,7 +107,7 @@ if __name__ == '__main__':
     print "Jsession:",JSession
     print "UMSCSRF:",get_umscsrf(JSession)
     
-    print "Error____"
+    print "Error____:"
     print UMSAuth('9262001222','198767')
     print GetAuthParams(Options.name,Options.password)
     
