@@ -187,20 +187,4 @@ if __name__ == '__main__':
     print (JsessionID,umscsrf)
     UpdateLocalSQLite(JsessionID,umscsrf,10,20,"+"+options.name)
     
-    
-    '''
-    
-    xml=xmlGetChatList(JsessionID,umscsrf)
-    ChatLs=ChatLists(xml)
-#    print "ChatLists To Insert:",ChatLs,"\n"
-    insChats=dbAddChatList(ChatLs,10)
-    print "InsertedChats:",insChats
-    
-    for ChatItem in insChats:
-        xml=xmlGetChat(JsessionID,umscsrf,'+79262001222',ChatItem['MSISDN'],10)
-#        print xml
-        MessageSet=Chat(xml)
-        addedMessages=dbAddMessages(MessageSet)
-        print 'AddedMessages:',ChatItem['MSISDN'],len(addedMessages),addedMessages
-
-    '''
+   
