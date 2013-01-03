@@ -188,5 +188,3 @@ if __name__ == '__main__':
     (JsessionID,umscsrf)=GetAuthParams(options.name,options.password)
     print (JsessionID,umscsrf)
     UpdateLocalSQLite(JsessionID,umscsrf,20,40,"+"+options.name)
-    
-   
