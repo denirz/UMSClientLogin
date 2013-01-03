@@ -92,7 +92,6 @@ def deleteItemFromDb(ObjectSer,conn,TableName,KeyFieldSet):
     Similarity means _KeyFieldSet_ parameters to be equal  to  corresponding fields of tghe table _TableName_
     DELETE FROM TableName WHERE (KeyField=ObjectSer[KeyField] AND KeyField2=ObjectSer[KeyField2] AND ...)
     '''
-    #First Delete:
     strSQL='DELETE FROM '+TableName+' WHERE ( '
     for KeyField in KeyFieldSet:
         strSQL=strSQL+KeyField+'="'+ObjectSer[KeyField]+'" AND '
@@ -171,7 +170,10 @@ def UpdateLocalSQLite(JsessionID,umscrf,ChatListDepth=10,ChatMessagesDepth=10,My
 #        print xml
         MessageSet=Chat(xml)
         addedMessages=dbAddMessages(MessageSet)
-        print 'AddedMessages:',ChatItem['MSISDN'],len(addedMessages),addedMessages
+        for msg in addedMessages:
+            print 'AddedMessage: FROM:',msg['snd'],'TO:',msg['rcv'], 'TIME:',msg['t'],":"
+            print '\t',msg['ttl']
+#        print 'AddedMessages:',ChatItem['MSISDN'],len(addedMessages),addedMessages
     
 
 ############################### Main 
@@ -182,7 +184,7 @@ from UMSClientLogin import  GetAuthParams
 if __name__ == '__main__':
     print "Main ParseXMLChatList:"
     (options,args)=ParseOptions.ParseOptions()
-    
+        
     (JsessionID,umscsrf)=GetAuthParams(options.name,options.password)
     print (JsessionID,umscsrf)
     UpdateLocalSQLite(JsessionID,umscsrf,20,40,"+"+options.name)

@@ -7,8 +7,6 @@ Created on Dec 22, 2012
 THis module  contains modules that are required to parse xml with chat lists and retum tuples  With  data from them
 '''
 from xml.dom.minidom import  parseString
-#import xml.dom.minidom 
-
 
 def ChatLists(xmlToParse):
     '''
@@ -64,7 +62,7 @@ if __name__ == '__main__':
     print ChatLs[0].keys()
     for i in ChatLs:
         print i 
-    xml=xmlGetChat(JsessionID,umscsrf,'+79262001222','+79262001223',10)
+    xml=xmlGetChat(JsessionID,umscsrf,'+79262001222','+79262005826',10)
     Messages=Chat(xml)
     print "Chat:",Messages
     print Messages[0].keys()

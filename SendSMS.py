@@ -12,7 +12,6 @@ import httplib
 import urllib
 
 def SendSMS(JSession,_umscsrf,NumberTo,Text,Flash=0):
-#    print "SendSMS:",_umscsrf
     '''
     SendSMS(JSession,_umscsrf,NumberTo,Text,Flash=0) Sends SMS to number NumberTo... 
     Jsession and _umscsfr are taken from login and first query
@@ -66,7 +65,6 @@ if __name__ == '__main__':
     
     Username=Options.name
     Password=Options.password
-#    Text=Options.text.encode("utf-8")
     Text=Options.text
     Phone=Options.dest
     print Text,Phone
@@ -75,8 +73,6 @@ if __name__ == '__main__':
     (JSessionID,_umscsrf)=GetAuthParams(Username,Password)
     print "JSessionID",JSessionID,_umscsrf
 
-#    if not _umscsrf: 
-#    _umscsrf='11111111111111'
     if _umscsrf<>0:
         xml=SendSMS(JSessionID,_umscsrf,Phone,Text,Flash)
         print xml
