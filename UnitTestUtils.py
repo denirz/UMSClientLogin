@@ -39,16 +39,16 @@ class TestRandInsert(unittest.TestCase):
     def test_InsertRandInString(self):
         stringto='1234567890ABC'       
         Longerstring=InsertRandInString(stringto)
-        print Longerstring
+#        print Longerstring
         self.assertEqual(len(Longerstring), 18, Longerstring+' длина не равна 18')
     def test_InsertRandStringShort(self):
         stringto='123'       
         Longerstring=InsertRandInString(stringto)
-        print Longerstring
+#        print Longerstring
         self.assertTrue(len(Longerstring)<18, Longerstring+' Длина больше 18')
         stringto=''       
         Longerstring=InsertRandInString(stringto)
-        print Longerstring
+#        print Longerstring
         self.assertTrue(len(Longerstring)<18, Longerstring+' Длина больше 18')
         
 if __name__ == "__main__":
