@@ -6,11 +6,17 @@ Created on Jan 3, 2013
 @author: denirz
 '''
 from Tkinter import  * 
+#import Tix 
 import tkFont
-from twisted.conch.test.test_helper import HEIGHT
+import ParseOptions
+#from UMSClientLogin.GetMessagesList import params
+#from twisted.conch.test.test_helper import HEIGHT
 
 class Application(Frame):
-    def __init__(self,master=None):
+    def __init__(self,master=None,username='111',password='222'):
+        self.username=username
+        self.password=password
+        
         Frame.__init__(self,master)
 #        self['height']='2000'
         self.pack(expand=1)
@@ -18,6 +24,9 @@ class Application(Frame):
         self.createSearchFrame()
         MainFrame=self.createMainFrame()
         self.putChatItem(MainFrame)
+        for data in ProvideDataToDisplay():
+            self.putChatItem(MainFrame, data[0], data[1], data[2])
+            
         self.putChatItem(MainFrame,'+79262001223','2012-31-10','ну просто достаточно длинный текст чтобы его   было можно перенести, если понадобится - ибо а вдруг понадобится? ')
         self.putChatItem(MainFrame,'+79262001223','2012-31-11','и еще один такой- же ну просто достаточно длинный текст чтобы его   было можно перенести, если понадобится - ибо а вдруг понадобится? ')
         self.putChatItem(MainFrame, '+79262131605', '2013-04-01', 'ты  поганый и вонючий урод,   я тебя неавижу! ')
@@ -28,10 +37,16 @@ class Application(Frame):
         self.topFrame=Frame(self,width='200',height='10') # to enhance later the size of the frame
 #        self.topFrame['expand']='true'
         self.topFrame.pack(side='top',expand=1,fill='x')
-        self.tempTopLabel=Label(self.topFrame,text='[------------TopFrame]')
-        self.tempTopLabel.pack(side='right')
-        self.refreshButton=Button(self.topFrame,text="refresh")
-        self.refreshButton.pack(side='left')
+#        self.tempTopLabel=Label(self.topFrame,text='[------------TopFrame]')
+#        self.tempTopLabel.pack(side='right')
+# TO DO  these buttons to be binded with actions in future 
+        self.refreshButton=Button(self.topFrame,text="Refresh")
+        self.refreshButton.pack(side='right')
+        self.createButton=Button(self.topFrame,text='New')
+        self.createButton.pack(side='left')
+        self.deleteButton=Button(self.topFrame,text='Delete All')
+        self.deleteButton.pack(side='left')
+        
         pass
     def createSearchFrame(self):
         self.searchFrame=Frame(self)
@@ -50,10 +65,13 @@ class Application(Frame):
         self.mainScrollBar=Scrollbar(self.mainSuperFrame)
         self.mainScrollBar.pack(side='right',fill='y')
 #         Create a Main  Frame
-        self.mainFrame=Frame(self.mainSuperFrame,width='200',height='2000')
+        self.mainFrame=Canvas(self.mainSuperFrame,width='200',height='200')
 #        self.mainFrame['height']='2000'
         self.mainFrame['background']='Yellow'
-        self.mainFrame.pack(side='left',fill='both')
+#        self.mainFrame['yscrollcommand']=self.mainScrollBar.set
+        self.mainFrame.pack(side='left',fill='both',expand='TRUE')
+
+        self.mainScrollBar.config(command=self.mainFrame.yview)
         return self.mainFrame
 #        # tempMainLabel:
 #        self.tempMainLabel=Label(self.mainFrame,text='[tempMainFrame]')
@@ -90,11 +108,25 @@ class Application(Frame):
         pass
     def createWidget(self):
         pass 
-    
+     
+def ProvideDataToDisplay(msisdn='79262001222',passwd='wwe3'):
+    returnset=()
+    triplet=(msisdn,'2012-31-01','some text -  just a text ')
+    for i in range(1,555):
+        returnset=returnset+((msisdn+str(i),'text'+str(i),'text'+str(i)+str(i)),)
+#        returnset=returnset+(cort,)
+    return returnset
+
 
 if __name__ == '__main__':
+    (args,params)=ParseOptions.ParseOptions()
+    print args,params
+    username=args.name
+    password=args.password
+    print "UserName.Password:", username,password
+    print ProvideDataToDisplay()
     root=Tk()
-    app=Application(master=root)
+    app=Application(master=root,username=username,password=password)
     app.mainloop()
     app.destroy()
     pass
