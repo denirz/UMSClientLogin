@@ -6,7 +6,7 @@ Created on Jan 5, 2013
 @author: denirz
 '''
 import unittest
-#from UMSClientLogin import GetAuthParams
+from UMSClientLogin import InsertRandInString
 import UMSClientLogin
 from ParseOptions import  ParseOptions
 #from UMSClientLogin.GetMessagesList import Jsession
@@ -34,9 +34,23 @@ class TestGetAuthParams(unittest.TestCase):
 #        print umscsrf,session
         self.assertEqual(umscsrf,0)
         self.assertEqual(session, 0, 'sessionID  не равен 0')
+ 
+class TestRandInsert(unittest.TestCase):
+    def test_InsertRandInString(self):
+        stringto='1234567890ABC'       
+        Longerstring=InsertRandInString(stringto)
+        print Longerstring
+        self.assertEqual(len(Longerstring), 18, Longerstring+' длина не равна 18')
+    def test_InsertRandStringShort(self):
+        stringto='123'       
+        Longerstring=InsertRandInString(stringto)
+        print Longerstring
+        self.assertTrue(len(Longerstring)<18, Longerstring+' Длина больше 18')
+        stringto=''       
+        Longerstring=InsertRandInString(stringto)
+        print Longerstring
+        self.assertTrue(len(Longerstring)<18, Longerstring+' Длина больше 18')
         
-
-
 if __name__ == "__main__":
 #    (args,options)=ParseOptions()
 #    print args
