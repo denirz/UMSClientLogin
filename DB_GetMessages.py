@@ -6,7 +6,7 @@ Created on Jan 6, 2013
 
 @author: denirz
 '''
-import sqlite3
+#import sqlite3
 from ParseOptions import ParseOptions
 from SQLiteSMS import  dbConnection
 def getChats(NumberOfChats=20):
