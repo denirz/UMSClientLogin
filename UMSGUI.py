@@ -11,7 +11,7 @@ import tkFont
 import ParseOptions
 #from UMSClientLogin.GetMessagesList import params
 #from twisted.conch.test.test_helper import HEIGHT
-
+from DB_GetMessages import getChats
 class Application(Frame):
     def __init__(self,master=None,username='111',password='222'):
         self.username=username
@@ -23,16 +23,20 @@ class Application(Frame):
         self.createTopFrame()
         self.createSearchFrame()
         MainFrame=self.createMainFrame()
-        self.putChatItem(MainFrame)
-        for data in ProvideDataToDisplay():
-            self.putChatItem(MainFrame, data[0], data[1], data[2])
+#        self.putChatItem(MainFrame) ## was here only for test 
+        self.putChats(MainFrame,30)
             
-        self.putChatItem(MainFrame,'+79262001223','2012-31-10','ну просто достаточно длинный текст чтобы его   было можно перенести, если понадобится - ибо а вдруг понадобится? ')
-        self.putChatItem(MainFrame,'+79262001223','2012-31-11','и еще один такой- же ну просто достаточно длинный текст чтобы его   было можно перенести, если понадобится - ибо а вдруг понадобится? ')
-        self.putChatItem(MainFrame, '+79262131605', '2013-04-01', 'ты  поганый и вонючий урод,   я тебя неавижу! ')
-        self.putChatItem(MainFrame, '+79262131605', '2013-04-01', 'ты  поганый и вонючий урод,   я тебя неавижу! ')
+#        self.putChatItem(MainFrame,'+79262001223','2012-31-10','ну просто достаточно длинный текст чтобы его   было можно перенести, если понадобится - ибо а вдруг понадобится? ')
+#        self.putChatItem(MainFrame,'+79262001223','2012-31-11','и еще один такой- же ну просто достаточно длинный текст чтобы его   было можно перенести, если понадобится - ибо а вдруг понадобится? ')
+#        self.putChatItem(MainFrame, '+79262131605', '2013-04-01', 'ты  поганый и вонючий урод,   я тебя неавижу! ')
+#        self.putChatItem(MainFrame, '+79262131605', '2013-04-01', 'ты  поганый и вонючий урод,   я тебя неавижу! ')
         self.createWidget()
         pass
+    
+    def putChats(self,MainFrame,NumerOfMsg=20):
+        for data in getChats(NumerOfMsg):
+            self.putChatItem(MainFrame, data[0], data[1], data[2])
+        
     def createTopFrame(self):
         self.topFrame=Frame(self,width='200',height='10') # to enhance later the size of the frame
 #        self.topFrame['expand']='true'
@@ -41,6 +45,7 @@ class Application(Frame):
 #        self.tempTopLabel.pack(side='right')
 # TO DO  these buttons to be binded with actions in future 
         self.refreshButton=Button(self.topFrame,text="Refresh")
+#        self.refreshButton['Command']=self.putChats(MainFrame, 40) #  not `fully Clear how to  call the MainFrame to Put There something. 
         self.refreshButton.pack(side='right')
         self.createButton=Button(self.topFrame,text='New')
         self.createButton.pack(side='left')
