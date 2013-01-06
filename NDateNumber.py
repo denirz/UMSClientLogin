@@ -64,6 +64,6 @@ def NormMSISDN(msisdn,format):
 #    print wmsisdn
 #    print result
 if __name__ == '__main__':
-    NormMSISDN("8 (926) 2001222","+")
+    print NormMSISDN("8 (926) 2001222","926")
 
     pass
