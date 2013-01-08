@@ -6,6 +6,7 @@ Created on Jan 3, 2013
 @author: denirz
 '''
 from Tkinter import  * 
+from NDateNumber import NormDate
 #import Tix 
 import tkFont
 import ParseOptions
@@ -24,7 +25,7 @@ class Application(Frame):
         self.createTopFrame()
         self.createSearchFrame()
         MainFrame=self.createMainFrame()
-        self.putChatItem(MainFrame) ## was here only for test 
+#        self.putChatItem(MainFrame) ## was here only for test 
         self.putChats(MainFrame,30)
             
 #        self.putChatItem(MainFrame,'+79262001223','2012-31-10','ну просто достаточно длинный текст чтобы его   было можно перенести, если понадобится - ибо а вдруг понадобится? ')
@@ -36,7 +37,7 @@ class Application(Frame):
     
     def putChats(self,MainFrame,NumerOfMsg=20):
         for data in getChats(NumerOfMsg):
-            self.putChatItem(MainFrame, data[0], data[1], data[2])
+            self.putChatItem(MainFrame, data[0], NormDate(data[1]), data[2])
         
     def createTopFrame(self):
         self.topFrame=Frame(self,width='200',height='10') # to enhance later the size of the frame
