@@ -12,6 +12,7 @@ import ParseOptions
 #from UMSClientLogin.GetMessagesList import params
 #from twisted.conch.test.test_helper import HEIGHT
 from DB_GetMessages import getChats
+from Tkconstants import VERTICAL
 class Application(Frame):
     def __init__(self,master=None,username='111',password='222'):
         self.username=username
@@ -23,7 +24,7 @@ class Application(Frame):
         self.createTopFrame()
         self.createSearchFrame()
         MainFrame=self.createMainFrame()
-#        self.putChatItem(MainFrame) ## was here only for test 
+        self.putChatItem(MainFrame) ## was here only for test 
         self.putChats(MainFrame,30)
             
 #        self.putChatItem(MainFrame,'+79262001223','2012-31-10','ну просто достаточно длинный текст чтобы его   было можно перенести, если понадобится - ибо а вдруг понадобится? ')
@@ -67,16 +68,21 @@ class Application(Frame):
         self.mainSuperFrame=Frame(self)
         self.mainSuperFrame.pack(side='top',fill='both')
 #        Create  a Scroll bar  on th right 
-        self.mainScrollBar=Scrollbar(self.mainSuperFrame)
-        self.mainScrollBar.pack(side='right',fill='y')
+        self.mainScrollBar=Scrollbar(self.mainSuperFrame,orient=VERTICAL)
+        self.mainFrame=Canvas(self.mainSuperFrame,width='200',yscrollcommand=self.mainScrollBar.set,scrollregion=(0,0,200,2000) )
+#        self.mainScrollBar['command']=self.mainFrame.set()
+#        self.mainScrollBar.pack(side='right',fill='y')
+        self.mainScrollBar.grid(sticky='e',columnspan='1')
+        
+#        self.mainScrollBar.config(command=self.mainFrame.yview)
+        self.mainScrollBar['command']=self.mainFrame.yview_moveto(0.1)
 #         Create a Main  Frame
-        self.mainFrame=Canvas(self.mainSuperFrame,width='200',height='200')
 #        self.mainFrame['height']='2000'
         self.mainFrame['background']='Yellow'
-#        self.mainFrame['yscrollcommand']=self.mainScrollBar.set
-        self.mainFrame.pack(side='left',fill='both',expand='TRUE')
+#        self.mainFrame.pack(side='left',fill='both',expand='TRUE')
+        self.mainFrame.grid()
 
-        self.mainScrollBar.config(command=self.mainFrame.yview)
+        self.mainFrame['yscrollcommand']=self.mainScrollBar.set
         return self.mainFrame
 #        # tempMainLabel:
 #        self.tempMainLabel=Label(self.mainFrame,text='[tempMainFrame]')
