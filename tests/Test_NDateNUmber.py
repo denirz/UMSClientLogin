@@ -7,7 +7,7 @@ Created on Jan 6, 2013
 @author: denirz
 '''
 import unittest
-from NDateNumber import NormMSISDN,NormDate
+from UMSClientLogin.NDateNumber import NormMSISDN,NormDate
 
 class Test(unittest.TestCase):
 
@@ -16,7 +16,7 @@ class Test(unittest.TestCase):
         inp='9262001222'
         outp='+79262001222'
         r=NormMSISDN(inp,'+')
-        self.assertEqual(r,outp,'expected:'+outp+' received:'+ r)
+        self.assertEqual(r,outp,'input:' +inp+' expected:'+outp+' received:'+ r)
         inp='+79262001222'
         outp=inp
         r=NormMSISDN(inp,'+')
