@@ -178,6 +178,7 @@ def UpdateLocalSQLite(JsessionID,umscrf,ChatListDepth=10,ChatMessagesDepth=10,My
 
 ############################### Main 
 import  ParseOptions 
+import NDateNumber
 from ParseXmlChatList import ChatLists, Chat 
 from GetMessagesList import xmlGetChatList,xmlGetChat
 from UMSClientLogin import  GetAuthParams
@@ -186,5 +187,7 @@ if __name__ == '__main__':
     (options,args)=ParseOptions.ParseOptions()
         
     (JsessionID,umscsrf)=GetAuthParams(options.name,options.password)
-    print (JsessionID,umscsrf)
-    UpdateLocalSQLite(JsessionID,umscsrf,20,40,"+"+options.name)
+    print (JsessionID,umscsrf) 
+    normname=NDateNumber.NormMSISDN(options.name, '+')
+    print 'normname=',normname 
+    UpdateLocalSQLite(JsessionID,umscsrf,20,40,normname)

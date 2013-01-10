@@ -27,6 +27,11 @@ def NormMSISDN(msisdn,format):
     comp8=re.compile(r'^8[1-9]+')
 #    print wmsisdn
     StartsFrom8=comp8.match(wmsisdn)
+    
+    if len(wmsisdn)==10:
+        Len10=1
+    else:
+        Len10=0
 #    print StartsFrom8
 #    print" removed spaces:",wmsisdn
     # if  required format is international -  simpleast way: 
@@ -40,8 +45,11 @@ def NormMSISDN(msisdn,format):
 #            print "Starts from 8:",wmsisdn
             wmsisdn=re.sub('^\+8','+7',wmsisdn)
             return wmsisdn
+        if Len10:
+            wmsisdn=re.sub('^\+','+7',wmsisdn)
+            return wmsisdn
         return wmsisdn
-    
+        
     if format=='7':
         if StartsFromPlus:
             wmsisdn=re.sub('^\+','',wmsisdn)
